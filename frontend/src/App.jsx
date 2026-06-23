@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard'
 import Userdata from './pages/Userdata'
 import Product from './pages/product'
 import Viewproducts from './pages/Viewproducts'
+import ProtectedRoute from './components/ProtectedRoute'
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -24,16 +25,17 @@ function App(){
       <div>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login/>}></Route>  
-                <Route path="/register" element={<Register/>}></Route>
-                <Route path="/login" element={<Login/>}></Route>       
-                <Route path="/home" element={<Home/>}></Route>      
-                <Route path="/Cart" element={<Cart/>}></Route>
-                <Route path="/Orders" element={<Orders/>}></Route>
-                <Route path="/Dashboard" element={<Dashboard/>}></Route>
-                <Route path="/Userdata" element={<Userdata/>}></Route>
-                <Route path="/product" element={<Product/>}></Route>
-                <Route path="/Viewproducts" element={<Viewproducts/>}></Route>
+              <Route path="/" element={<Login/>}></Route>
+              <Route path="/register" element={<Register/>}></Route>
+              <Route path="/login" element={<Login/>}></Route>
+
+              <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}></Route>
+              <Route path="/Cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}></Route>
+              <Route path="/Orders" element={<ProtectedRoute><Orders/></ProtectedRoute>}></Route>
+              <Route path="/Dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}></Route>
+              <Route path="/Userdata" element={<ProtectedRoute><Userdata/></ProtectedRoute>}></Route>
+              <Route path="/product" element={<ProtectedRoute><Product/></ProtectedRoute>}></Route>
+              <Route path="/Viewproducts" element={<ProtectedRoute><Viewproducts/></ProtectedRoute>}></Route>
 
             </Routes>
         </BrowserRouter>

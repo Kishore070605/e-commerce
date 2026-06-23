@@ -2,12 +2,19 @@ import { useForm } from "react-hook-form"
 import Login from "./Login"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
+import { useContext, useEffect } from 'react'
+import { UserContext } from '../context/UserContext'
 
 // const response = await axios.post(`${API}/api/register`, data);
 
 function Register() {
   const { register, reset, handleSubmit,getValues, formState: { errors } } = useForm()
   const navigate = useNavigate()
+  const { user, loading } = useContext(UserContext)
+
+  useEffect(() => {
+    if (!loading && user) navigate('/home')
+  }, [user, loading, navigate])
   const onSubmit = async (data) => {
       try{
         const API = import.meta.env.VITE_API_URL

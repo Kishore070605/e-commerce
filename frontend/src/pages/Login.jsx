@@ -2,14 +2,18 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios"
 import { toast } from 'react-toastify'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const navigate = useNavigate()
-  const { refetchUser } = useContext(UserContext)
+  const { refetchUser, user, loading } = useContext(UserContext)
+
+  useEffect(() => {
+    if (!loading && user) navigate('/home')
+  }, [user, loading, navigate])
   
   const onSubmit = async (data) => {
     try{
