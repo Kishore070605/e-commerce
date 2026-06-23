@@ -59,7 +59,14 @@ function Home(){
                         <h1 className="text-2xl font-semibold text-slate-900">E-commerce</h1>
                         
                     </div>
-                    <div className="flex flex-wrap items-center gap-3">
+                     <div className="flex flex-wrap items-center gap-3">
+                        <Link
+                            to="/profile"
+                            className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                        >
+                            profile
+                        </Link>
+                    
                         <Link
                             to="/Orders"
                             className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"

@@ -4,6 +4,7 @@ import axios from 'axios'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import Cart from './pages/Cart'
 import Orders from './pages/Orders'
 import Dashboard from './pages/Dashboard'
@@ -28,7 +29,7 @@ function App(){
               <Route path="/" element={<Login/>}></Route>
               <Route path="/register" element={<Register/>}></Route>
               <Route path="/login" element={<Login/>}></Route>
-
+              <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}></Route>
               <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}></Route>
               <Route path="/Cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}></Route>
               <Route path="/Orders" element={<ProtectedRoute><Orders/></ProtectedRoute>}></Route>

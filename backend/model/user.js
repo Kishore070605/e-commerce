@@ -16,6 +16,9 @@ const mongooseschema = new mongoose.Schema({
     role:{
         type : String,
         required : true
+    },
+    profileimage:{
+        type : String
     }
 
 })

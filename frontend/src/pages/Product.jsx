@@ -19,8 +19,11 @@ function Product() {
 
     try {
       const res = await axios.post(`${API}/api/addproduct`, formdata)
-      toast.success("Product uploaded successfully.")
-      reset()
+      if(res.data.status){
+        toast.success("Product uploaded successfully.")
+        reset()
+
+      }
 //       reset({
 //   productname: "",
 //   price: "",
@@ -29,7 +32,7 @@ function Product() {
 //   productimage: null
 // })
     } catch (err) {
-      console.error(err)
+      
       setStatus("Upload failed")
     }
   }
