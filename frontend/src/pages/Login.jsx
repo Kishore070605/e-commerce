@@ -2,11 +2,15 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios"
 import { toast } from 'react-toastify'
+import { useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const navigate = useNavigate()
+  const { refetchUser } = useContext(UserContext)
+  
   const onSubmit = async (data) => {
     try{
       const API = import.meta.env.VITE_API_URL
@@ -14,8 +18,7 @@ function Login() {
       // const login = await axios.post("http://localhost:3000/api/login",data)
     
       if(response.data.status){  
-        sessionStorage.setItem("email",data.email)
-        sessionStorage.setItem("role",response.data.role)
+        await refetchUser()
         navigate("/home")
       }else{
         console.log("access invalid ")

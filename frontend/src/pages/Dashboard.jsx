@@ -1,7 +1,14 @@
 import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { UserContext } from "../context/UserContext"
 
 function Dashboard(){
     const nevigate = useNavigate()
+    const { logout } = useContext(UserContext)
+
+    const handleLogout = async () => {
+        await logout()
+    }
     return(
         <div className="min-h-screen bg-slate-100 p-6">
             <div className="mx-auto max-w-5xl">
@@ -14,7 +21,7 @@ function Dashboard(){
                             <Link to="/product" className="text-sm text-slate-700 hover:text-slate-900">add Products</Link>
                             <Link to="/Viewproducts" className="text-sm text-slate-700 hover:text-slate-900">view Products</Link> */}
                         </nav>
-                        <Link to="/login" className="rounded-md bg-slate-900 px-3 py-1 text-sm text-white hover:bg-slate-800">Logout</Link>
+                        <Link to="/login" onClick={handleLogout} className="rounded-md bg-slate-900 px-3 py-1 text-sm text-white hover:bg-slate-800">Logout</Link>
                     </div>
                 </header>
 

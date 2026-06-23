@@ -1,20 +1,22 @@
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
+import { UserContext } from "../context/UserContext"
 
 function Home(){
     const API = import.meta.env.VITE_API_URL
     const [product, setProduct] = useState([])
     const [search, setSearch] = useState("")
+    const { user, logout } = useContext(UserContext)
+    
     useEffect(() => {
         fetchProduct()
       }, [])
 
       async function addToCart(event,id){
             try{
-                console.log(sessionStorage.getItem("email"))
                 console.log(id)
-                const response = await axios.post(`${API}/api/Cart`,{email:sessionStorage.getItem("email"),id:id})
+                const response = await axios.post(`${API}/api/Cart`,{id:id})
                 console.log(response.data)
 
             }  catch (error) {
@@ -45,6 +47,10 @@ function Home(){
         }
       }
 
+      async function handleLogout() {
+        await logout()
+      }
+
     return(
         <div className="min-h-screen bg-slate-100 px-4 py-8">
             <div className="mx-auto max-w-6xl">
@@ -68,11 +74,12 @@ function Home(){
                         </Link>
                         <Link   
                             to="/login" 
+                            onClick={handleLogout}
                             className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800">
                             Logout
                         </Link>
 
-                        {sessionStorage.getItem("role")=="admin" &&
+                        {user?.role=="admin" &&
                            <Link to="/Dashboard" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50">Dashboard</Link>
                         }
                     </div>  

@@ -1,23 +1,26 @@
 
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { UserContext } from "../context/UserContext"
 
 
 function Cart() {
 
     const [cart, setCart] = useState([])
     const API = import.meta.env.VITE_API_URL
+    const { user } = useContext(UserContext)
+    
     useEffect(() => {
-        fetchCart()
-    }, [])
+        if (user) {
+            fetchCart()
+        }
+    }, [user])
 
     async function fetchCart() {
         try {
-            
-        
-            const response = await axios.post(`${API}/api/addCart`, { email: sessionStorage.getItem("email") })
+            const response = await axios.post(`${API}/api/addCart`, {})
             setCart(response.data.cart.products || [])
             console.log(response.data)
         } catch (error) {
@@ -30,8 +33,7 @@ function Cart() {
         event.preventDefault()
         try {
             const response = await axios.post(`${API}/api/removeFromCart`, {
-                id: id,
-                email: sessionStorage.getItem("email")
+                id: id
             })
             console.log(id)
             fetchCart()
@@ -46,7 +48,6 @@ function Cart() {
         try {
             const response = await axios.post(`${API}/api/updateQuantity`, {
                 id: id,
-                email: sessionStorage.getItem("email"),
                 quantity: newQuantity
             })
             console.log(response.data)
@@ -65,7 +66,7 @@ function Cart() {
     }
 
     async function addOrder(event) {
-        const response = await axios.post(`${API}/api/addOrder`, { email: sessionStorage.getItem("email") })
+        const response = await axios.post(`${API}/api/addOrder`, {})
         console.log(response.data)
         toast.success("Your order placed")
         fetchCart()

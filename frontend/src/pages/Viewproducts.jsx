@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { UserContext } from "../context/UserContext"
 
 
 function Viewproducts() {
   const API = import.meta.env.VITE_API_URL  
   const [viewproducts, setViewproducts] = useState([])
+  const { user } = useContext(UserContext)
 
   useEffect(() => {
-    fetchproduct()
-  }, [])
+    if (user) {
+      fetchproduct()
+    }
+  }, [user])
 
   async function fetchproduct() {
     try {
@@ -26,8 +30,7 @@ function Viewproducts() {
     try{
       console.log(id) 
     const response= await axios.post(`${API}/api/removeFromProduct`,{
-      id:id,
-      email:sessionStorage.getItem("email")
+      id:id
     })
     toast.success("Product removed successfully.")
     fetchproduct()

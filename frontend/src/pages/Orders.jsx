@@ -1,18 +1,23 @@
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
+import { UserContext } from "../context/UserContext"
 
 function Orders() {
 
     const API = import.meta.env.VITE_API_URL    
     const [orders, setOrders] = useState([])
+    const { user } = useContext(UserContext)
+    
     useEffect(() => {
-        viewOrders()
-    }, [])
+        if (user) {
+            viewOrders()
+        }
+    }, [user])
 
     async function viewOrders() {
         try {
-            const response = await axios.post(`${API}/api/viewOrders`, { email: sessionStorage.getItem("email") })
+            const response = await axios.post(`${API}/api/viewOrders`, {})
             setOrders(response.data.orders || [])
             console.log(response.data.orders)
         } catch (error) {

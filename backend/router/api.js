@@ -109,6 +109,29 @@ router.post("/login",loginLimit, async (req, res) => {
 
 });
 
+// Get current user from JWT token
+router.get("/currentUser", auth, async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email })
+        if (!user) {
+            return res.status(404).json({
+                status: false,
+                message: "User not found"
+            })
+        }
+        res.json({
+            status: true,
+            email: user.email,
+            role: user.role,
+            username: user.username
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message || "Failed to fetch user"
+        })
+    }
+})
 
 router.get("/Userdata",auth,async(req,res)=>{
     try{
@@ -194,7 +217,8 @@ router.get("/Viewproducts",auth,async(req,res)=>{
 
 router.post("/Cart",auth,async(req,res)=>{
     try{
-        const {email,id} = req.body
+        const email = req.user.email
+        const {id} = req.body
         const product = await Product.findById(id)
         if(!product){
             return res.status(404).json({
@@ -252,7 +276,7 @@ router.post("/Cart",auth,async(req,res)=>{
 
 router.post("/addCart",auth,async(req,res)=>{
     try{
-        const {email,id} = req.body
+        const email = req.user.email
         const cart = await Cart.findOne({email})
         res.status(200).json({
             status : true,
@@ -274,7 +298,8 @@ router.post("/addCart",auth,async(req,res)=>{
 
 router.post("/updateQuantity",auth, async(req,res)=>{
     try{
-        const {email, id, quantity} = req.body
+        const email = req.user.email
+        const {id, quantity} = req.body
         const qty = Number(quantity) || 1
 
         const cart = await Cart.findOneAndUpdate(
@@ -308,7 +333,8 @@ router.post("/updateQuantity",auth, async(req,res)=>{
 
 router.post("/removeFromCart",auth, async(req,res)=>{
     try{
-            const {email,id} = req.body
+            const email = req.user.email
+            const {id} = req.body
 
             const cart = await Cart.findOneAndUpdate(
                 { email },
@@ -342,7 +368,7 @@ router.post("/removeFromCart",auth, async(req,res)=>{
 
 router.post("/addOrder",auth,async(req,res)=>{
     try{
-        const {email} = req.body
+        const email = req.user.email
         const cart = await Cart.findOne({email})
         if(!cart || !cart.products || cart.products.length === 0){
             return res.status(404).json({
@@ -380,7 +406,7 @@ router.post("/addOrder",auth,async(req,res)=>{
 
 router.post("/viewOrders",auth,async(req,res)=>{
     try{
-        const {email} = req.body
+        const email = req.user.email
         const orders = await Order.find({email})
 
         res.status(200).json({
@@ -442,5 +468,17 @@ router.post("/search",auth,async(req,res)=>{
     }
 })
 
+// Logout route
+router.post("/logout", (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict"
+    })
+    res.json({
+        status: true,
+        message: "Logged out successfully"
+    })
+})
 
 module.exports=router
