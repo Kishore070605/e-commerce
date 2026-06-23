@@ -429,8 +429,8 @@ router.post("/viewOrders",auth,async(req,res)=>{
 
 router.post("/removeFromProduct",auth, async(req,res)=>{
     try{
-            const {email,id} = req.body
-            console.log(email,id)
+            const {id} = req.body
+            console.log(id)
 
             const product = await Product.findOneAndDelete({ _id:id })
 
