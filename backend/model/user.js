@@ -19,6 +19,9 @@ const mongooseschema = new mongoose.Schema({
     },
     profileimage:{
         type : String
+    },
+    mobile:{
+        type : String
     }
 
 })

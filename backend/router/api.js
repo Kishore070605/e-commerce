@@ -12,7 +12,7 @@ const auth = require("../middlewear/auth")
 
 
 const loginLimit = rateLimit({
-    windowMs : 10 * 60 * 1000,
+    windowMs : 1 * 60 * 1000,
     max : 7,
     message :{
         status : "false",
@@ -24,9 +24,9 @@ const loginLimit = rateLimit({
 
 router.post("/register",async(req,res)=>{
     try{
-        const {username,email,password} = req.body
+        const {username,email,password,mobile} = req.body
         const hasedPassword=await bcrypt.hash(password,10)
-        const user = new User({username,email,password : hasedPassword,role:"user"})
+        const user = new User({username,email,password : hasedPassword,role:"user",mobile})
         await user.save()
         res.status(201).json({
             status : true,
@@ -123,7 +123,9 @@ router.get("/currentUser", auth, async (req, res) => {
             status: true,
             email: user.email,
             role: user.role,
-            username: user.username
+            username: user.username,
+            mobile: user.mobile,
+            profileimage: user.profileimage
         })
     } catch (error) {
         res.status(500).json({
@@ -468,6 +470,84 @@ router.post("/search",auth,async(req,res)=>{
     }
 })
 
+// Update profile
+router.post("/updateProfile", auth, async (req, res) => {
+    try {
+        const { username, mobile } = req.body
+        const email = req.user.email
+        
+        const user = await User.findOneAndUpdate(
+            { email },
+            { username, mobile },
+            { new: true }
+        )
+        
+        if (!user) {
+            return res.status(404).json({
+                status: false,
+                message: "User not found"
+            })
+        }
+        
+        res.json({
+            status: true,
+            message: "Profile updated successfully",
+            email: user.email,
+            role: user.role,
+            username: user.username,
+            mobile: user.mobile,
+            profileimage: user.profileimage
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message || "Failed to update profile"
+        })
+    }
+})
+
+// Upload profile image
+router.post("/uploadProfileImage", auth, upload.single("profileimage"), async (req, res) => {
+    try {
+        const email = req.user.email
+        
+        if (!req.file) {
+            return res.status(400).json({
+                status: false,
+                message: "No file uploaded"
+            })
+        }
+        
+        const user = await User.findOneAndUpdate(
+            { email },
+            { profileimage: req.file.filename },
+            { new: true }
+        )
+        
+        if (!user) {
+            return res.status(404).json({
+                status: false,
+                message: "User not found"
+            })
+        }
+        
+        res.json({
+            status: true,
+            message: "Profile image uploaded successfully",
+            profileimage: user.profileimage,
+            email: user.email,
+            role: user.role,
+            username: user.username,
+            mobile: user.mobile
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message || "Failed to upload profile image"
+        })
+    }
+})
+
 // Logout route
 router.post("/logout", (req, res) => {
     res.clearCookie("token", {
@@ -480,5 +560,40 @@ router.post("/logout", (req, res) => {
         message: "Logged out successfully"
     })
 })
+
+
+
+
+router.get("/product/:id",auth, async (req, res) => {
+
+  try {
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({
+        status: false,
+        message: "Product not found"
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      product
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      status: false,
+      message: err.message
+    })
+
+  }
+
+})
+
+
+
 
 module.exports=router
