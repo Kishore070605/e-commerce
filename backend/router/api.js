@@ -157,24 +157,63 @@ router.get("/Userdata",auth,async(req,res)=>{
 
 // upload products
 
-router.post("/addproduct",auth,upload.single("productimage"),async(req,res)=>{
-    try{
-        const {productname,price,category,description} = req.body
-        const product = new Product({productname,price,category,productimage:req.file.filename,description})
-        await product.save()
-        res.status(200).json({
-            status : true,
-            message : "Product saved successfully",
-            product : product
-        })
-    }catch(error){
-         res.status(500).json({
-            status : false,
-            message : error.message || "failed"
-         })
+// router.post("/addproduct",auth,upload.single("productimage"),async(req,res)=>{
+//     try{
+//         const {productname,price,category,description} = req.body
+//         const product = new Product({productname,price,category,productimage:req.file.filename,description})
+//         await product.save()
+//         res.status(200).json({
+//             status : true,
+//             message : "Product saved successfully",
+//             product : product
+//         })
+//     }catch(error){
+//          res.status(500).json({
+//             status : false,
+//             message : error.message || "failed"
+//          })
 
+//     }
+// })
+
+
+router.post("/addproduct",auth,upload.single("productimage"),
+  async (req, res) => {
+    try {
+      const { productname, price, category, description } = req.body;
+        console.log(req.file)
+        console.log(req.body)
+      // Check if image is uploaded
+      if (!req.file) {
+        return res.status(400).json({
+          status: false,
+          message: "Product image is required",
+        })
+      }
+
+      const product = new Product({
+        productname,
+        price,
+        category,
+        description,
+        productimage: req.file.filename,
+      })
+
+      await product.save()
+
+      res.status(201).json({
+        status: true,
+        message: "Product saved successfully",
+        product,
+      })
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        message: error.message,
+      })
     }
-})
+  }
+)
 
 
 router.get("/viewproduct",auth,async(req,res)=>{
