@@ -9,6 +9,8 @@ const Cart = require("../model/cart")
 const Order = require("../model/order")
 const rateLimit = require("express-rate-limit")
 const auth = require("../middlewear/auth")
+const path = require("path")
+const fs = require("fs")
 
 
 const loginLimit = rateLimit({
@@ -562,7 +564,7 @@ router.post("/logout", (req, res) => {
 })
 
 
-
+// edit the products in viewproducts
 
 router.get("/product/:id",auth, async (req, res) => {
 
@@ -595,5 +597,48 @@ router.get("/product/:id",auth, async (req, res) => {
 
 
 
+
+router.patch("/editproduct",auth,upload.single("productimage"),async(req,res)=>{
+    try{
+        const {id,productname,price,category,description} = req.body
+        const responce = await Product.findOne({_id:id}).select("productimage")
+        const image = responce.productimage
+        const data={
+            productname,
+            price,
+            category,
+            description
+        }
+        if(req.file){
+            const filepath=path.join(__dirname,"../uploads",image)
+            if(fs.existsSync(filepath)){
+                fs.unlinkSync(filepath)
+                console.log("filed deleted")
+            }
+            data.productimage=req.file.filename
+        }
+        const edit=await Product.findOneAndUpdate({_id:id},{$set:data},{new:true})
+
+        if(edit){   
+
+            res.status(200).json({
+                status : true,
+                message : "Product updated successfully",
+            })
+        }
+        else{
+            res.status(500).json({
+                status : false,
+                message : "Product not updated",
+            })
+        }
+    }catch(error){
+         res.status(500).json({
+            status : false,
+            message : error.message || "failed"
+         })
+
+    }
+})
 
 module.exports=router

@@ -109,27 +109,30 @@ function Home(){
       />
         <button onClick={searchbar} className="rounded-lg bg-slate-900 px-6 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">Search</button>
     </div>
+
                 {product.length>0 &&
                 <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     {product.map((data, index) => (
                         <article key={data._id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-lg hover:-translate-y-1">
-                            <img
+                            <Link to={`/productdetails/${data._id}`}>
+                            <img    
                                 src={`${API}/uploads/${data.productimage}`}
                                 alt="Product"
                                 className="h-48 w-full object-cover"
                             />
-                            <div className="space-y-3 p-5">
-                                <div>
+                            
+                                <div className="space-y-3 p-5">
                                     <h4 className="line-clamp-2 text-lg font-semibold text-slate-900">{data.productname}</h4>
                                     <p className="mt-1 text-sm text-slate-500">{data.category}</p>
                                     <p className="mt-2 text-xl font-bold text-slate-900">₹{data.price}</p>
                                 </div>
-                                <button
+                                </Link>
+                                <button className="space-y-3 p-5"
                                     onClick={(event)=>{addToCart(event,data._id)}}                                        
                                     className="w-full rounded-lg bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 active:scale-95">
                                     Add to cart
                                 </button>
-                            </div>
+                            
                         </article>
                     ))}
                 </section>

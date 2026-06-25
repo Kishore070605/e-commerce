@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react"
 import axios from "axios"
+import { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify"
 import { UserContext } from "../context/UserContext"
 
@@ -8,6 +9,7 @@ function Viewproducts() {
   const API = import.meta.env.VITE_API_URL  
   const [viewproducts, setViewproducts] = useState([])
   const { user } = useContext(UserContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user) {
@@ -23,6 +25,17 @@ function Viewproducts() {
       console.error("Failed to load product", error)
       setViewproducts([])
     }
+  }
+
+  async function edit(event,id) {
+    event.preventDefault()
+    try{
+      console.log(id)
+      navigate(`/Editproducts/${id}`)
+    }catch(error){
+      console.error("failed",error)
+    }
+    
   }
 
   async function remove(event,id) {
@@ -65,6 +78,9 @@ function Viewproducts() {
                   category
                 </th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-wide text-slate-500">
+                  edit
+                </th>
+                <th className="px-5 py-4 font-semibold uppercase tracking-wide text-slate-500">
                   remove
                 </th>
               </tr>
@@ -78,6 +94,9 @@ function Viewproducts() {
                   </td>
                   <td className="px-7 py-4 text-slate-700">{product.price}</td>
                   <td className="px-10 py-4 text-slate-700">{product.category}</td>
+                  <td>
+                    <button className="px-7 py-4 text-l text-blue-700" onClick={(event)=>{edit(event,product._id)}}>edit</button>
+                  </td>
                   <td>
                     <button className="px-7 py-4 text-l text-red-700" onClick={(event)=>{remove(event,product._id)}}>remove</button>
                   </td>

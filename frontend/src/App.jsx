@@ -12,6 +12,8 @@ import Userdata from './pages/Userdata'
 import Product from './pages/product'
 import Viewproducts from './pages/Viewproducts'
 import ProtectedRoute from './components/ProtectedRoute'
+import Editproducts from './pages/Editproducts'
+import Productdetails from './pages/Productdetails'
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -37,7 +39,8 @@ function App(){
               <Route path="/Userdata" element={<ProtectedRoute><Userdata/></ProtectedRoute>}></Route>
               <Route path="/product" element={<ProtectedRoute><Product/></ProtectedRoute>}></Route>
               <Route path="/Viewproducts" element={<ProtectedRoute><Viewproducts/></ProtectedRoute>}></Route>
-
+              <Route path="/Editproducts/:id" element={<ProtectedRoute><Editproducts/></ProtectedRoute>}></Route>
+              <Route path="/Productdetails/:id" element={<ProtectedRoute><Productdetails/></ProtectedRoute>}></Route>
             </Routes>
         </BrowserRouter>
         <ToastContainer position ='top-center' autoClose={2000} pauseOnHover closeOnClick/>
