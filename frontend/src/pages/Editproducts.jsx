@@ -11,6 +11,7 @@ function Editproducts() {
     const [status, setStatus] = useState("")
     const [image,setImage] = useState("")
     const navigate = useNavigate()
+    const {id}=useParams()
 
 
      useEffect(() => {
