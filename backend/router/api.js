@@ -181,8 +181,7 @@ router.post("/addproduct",auth,upload.single("productimage"),
   async (req, res) => {
     try {
       const { productname, price, category, description } = req.body;
-        console.log(req.file)
-        console.log(req.body)
+        
       // Check if image is uploaded
       if (!req.file) {
         return res.status(400).json({
