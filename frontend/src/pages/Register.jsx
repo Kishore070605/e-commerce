@@ -50,6 +50,15 @@ function Register() {
             {errors.username && <span className="mt-2 block text-sm text-rose-600">This field is required.</span>}
           </label>
 
+              <label className="block">
+                <span className="text-sm font-medium text-slate-700">Mobile Number</span>
+                <input
+                  type="tel"
+                  placeholder="Enter your mobile number"
+                  {...register("mobile", { required: false })}
+                  className="mt-3 w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 shadow-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                />
+              </label>
           <label className="block">
             <span className="text-sm font-medium text-slate-700">Email</span>
             <input
@@ -85,15 +94,6 @@ function Register() {
             {errors.confirmPassword && <span className="mt-2 block text-sm text-rose-600">{errors.confirmPassword.message}</span>}
           </label>
 
-          <label className="block">
-            <span className="text-sm font-medium text-slate-700">Mobile Number</span>
-            <input
-              type="tel"
-              placeholder="Enter your mobile number"
-              {...register("mobile", { required: false })}
-              className="mt-3 w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 shadow-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-            />
-          </label>
 
           <button
             className="w-full rounded-3xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
