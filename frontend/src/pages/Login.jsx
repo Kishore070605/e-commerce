@@ -18,7 +18,10 @@ function Login() {
   const onSubmit = async (data) => {
     try{
       const API = import.meta.env.VITE_API_URL
-        const response = await axios.post(`${API}/api/login`, data)
+        const response = await axios.post(`${API}/api/login`, data,
+    {
+        withCredentials: true
+    })
       // const login = await axios.post("http://localhost:3000/api/login",data)
     
       if(response.data.status){  

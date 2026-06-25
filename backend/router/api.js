@@ -99,7 +99,7 @@ router.post("/login",loginLimit, async (req, res) => {
     res.cookie("token",token,{
         httpOnly : true,
         secure : true,
-        sameSite : "strict",
+        sameSite : "None",
         maxAge : 24 *60 *60 *1000
     })
 
@@ -555,7 +555,7 @@ router.post("/logout", (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         secure: true,
-        sameSite: "strict"
+        sameSite: "None"
     })
     res.json({
         status: true,
