@@ -98,7 +98,7 @@ router.post("/login",loginLimit, async (req, res) => {
 
     res.cookie("token",token,{
         httpOnly : true,
-        secure : false,
+        secure : true,
         sameSite : "strict",
         maxAge : 24 *60 *60 *1000
     })
@@ -554,7 +554,7 @@ router.post("/uploadProfileImage", auth, upload.single("profileimage"), async (r
 router.post("/logout", (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: "strict"
     })
     res.json({
